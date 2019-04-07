@@ -23,16 +23,19 @@ train_datagen = ImageDataGenerator(rescale=1./255,
                                    height_shift_range=0.2,
                                    shear_range=0.2,
                                    zoom_range=0.2,
-                                   horizontal_flip=True,
-                                   fill_mode='nearest')
+                                   horizontal_flip=True)
 test_datagen = ImageDataGenerator(rescale=1./255)
 
-training_set = train_datagen.flow_from_directory('/home/zeref/Human_Detection/Dataset/Train',target_size=(64, 64),batch_size=32,class_mode='binary')
-test_set = test_datagen.flow_from_directory('/home/zeref/Human_Detection/Dataset/Test',target_size=(64, 64),batch_size=32,class_mode='binary')
+training_set = train_datagen.flow_from_directory('/home/zeref/Human-Detector/Dataset/Train',target_size=(64, 64),batch_size=32,class_mode='binary')
+test_set = test_datagen.flow_from_directory('/home/zeref/Human-Detector/Dataset/Test',target_size=(64, 64),batch_size=32,class_mode='binary')
+
 
 classifier=Sequential()
-classifier.add(Conv2D(32, (3, 3), activation='relu', input_shape=(64,64,3)))
-classifier.add(SeparableConv2D(32,(3, 3), activation='relu'))
+classifier.add(Conv2D(32, (3, 3), input_shape = (64, 64, 3), activation = 'relu'))
+classifier.add(MaxPooling2D())
+classifier.add(Conv2D(32, (3, 3), activation = 'relu'))
+classifier.add(MaxPooling2D())
+classifier.add(SeparableConv2D(32, (3, 3), activation = 'relu'))
 classifier.add(MaxPooling2D())
 classifier.add(Flatten())
 classifier.add(Dense(128, activation='relu'))
@@ -43,7 +46,7 @@ classifier.fit_generator(training_set,steps_per_epoch=6562,epochs=10,validation_
 
 
 
-test_image= image.load_img('/home/zeref/Human_Detection/1.png',target_size=(64,64))
+test_image= image.load_img('/home/zeref/Human-Detector/1.png',target_size=(64,64))
 test_image= image.img_to_array(test_image)
 test_image=np.expand_dims(test_image,axis=0)
 result=classifier.predict(test_image)
