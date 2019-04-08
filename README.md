@@ -1,9 +1,11 @@
 # Human-Detector
 Binary Classifier for Human Detection in an Image
 
-### Requirements:
-  1. Keras
-  2. Python
+### Environment:
+  1. Python 3
+  2. Numpy
+  3. OS: Linux ( Ubuntu 18 )
+  4. Keras
   
 ### Approach:
   1. Used INRIA dataset
